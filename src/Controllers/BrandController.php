@@ -4,17 +4,18 @@ namespace PhiRakib\InventoryProduct\Controllers;
 
 use Illuminate\Http\Request;
 use PhiRakib\InventoryProduct\Models\Brand;
+use PhiRakib\InventoryProduct\Controllers\Controller;
 
-class BrandController
+class BrandController extends Controller
 {
     public function index()
     {
         return Brand::all();
     }
 
-    public function show(Brand $brand)
+    public function show($id)
     {
-        return $brand;
+        return Brand::findOrFail($id);
     }
 
     public function store(Request $request)
@@ -25,18 +26,22 @@ class BrandController
             'message' => 'Brand Created Successfully'
         ], 201);
     }
-    
-    public function update(Request $request, Brand $brand)
+
+    public function update(Request $request, $id)
     {
+        $brand = Brand::findOrFail($id);
+
         $brand->update($request->all());
 
         return response()->json(['message' => 'Brand Updated Succesfully']);
     }
 
-    public function destroy(Brand $brand)
+    public function destroy($id)
     {
+        $brand = Brand::findOrFail($id);
+
         $brand->delete();
 
-        return response()->json(['message' => 'Brand Deleted Successfully']);
+        return response()->json(['message' => 'Brand Deleted Successfully'], 204);
     }
 }
